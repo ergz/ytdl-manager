@@ -18,5 +18,9 @@
 #submit-add-data {
     layout: horizontal;
     padding-left: 1;
+    height: 5;
 }
 
+#current-table {
+        
+}

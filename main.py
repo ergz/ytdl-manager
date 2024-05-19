@@ -1,5 +1,5 @@
 from textual.app import App, ComposeResult
-from textual.widgets import Header, Footer, Button, Input, Label
+from textual.widgets import Header, Footer, Button, Input, Label, DataTable
 from textual.containers import Container
 import csv
 import os
@@ -12,6 +12,9 @@ class FileDB:
         self.path = path
         self._fieldnames = ["name", "url", "created_at"]
         self._create_if_not_exist()
+
+    def get_field_names(self):
+        return self._fieldnames
 
     def _create_if_not_exist(self) -> None:
         if not os.path.exists(self.path):
@@ -58,6 +61,8 @@ class YTApp(App):
             id="add-data",
         )
         yield Container(Button("Add", variant="primary"), id="submit-add-data")
+        yield DataTable(id="current-table")
+
         yield Footer()
 
     def on_input_submitted(self):
@@ -77,6 +82,11 @@ class YTApp(App):
     def on_mount(self) -> None:
         self.title = "Youtube Video Aggregator"
         self.sub_title = "a tool to download from your favorite creators"
+        table = self.query_one(DataTable)
+        table.add_columns(*self.db.get_field_names())
+        data = self.db.read()
+        for d in data:
+            table.add_row(*tuple(d.values()))
 
     def action_toggle_dark(self) -> None:
         self.dark = not self.dark
