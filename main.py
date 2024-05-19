@@ -1,5 +1,6 @@
 from textual.app import App, ComposeResult
-from textual.widgets import Header, Footer, Button, Input
+from textual.widgets import Header, Footer, Button, Input, Label
+from textual.containers import Container
 import csv
 import os
 from typing import Dict, List
@@ -44,10 +45,13 @@ class YTApp(App):
     def compose(self) -> ComposeResult:
         yield Header()
         # TODO: add validators to make sure that this is a url
-        yield Input(placeholder="name", type="text", id="add-new-name")
-        yield Input(placeholder="url", type="text", id="add-new-url")
-        yield Button("Button 1", variant="primary")
-        yield Button("Button 2")
+        yield Container(Label("Add new channel to track"), id="add-url-text")
+        yield Container(
+            Input(placeholder="name", type="text", id="add-new-name"),
+            Input(placeholder="url", type="text", id="add-new-url"),
+            id="add-data",
+        )
+        yield Container(Button("Add", variant="primary"), id="submit-add-data")
         yield Footer()
 
     def on_mount(self) -> None:

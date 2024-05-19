@@ -1,13 +1,22 @@
-#add-new-pane {
-    align: left top;
+#add-data {
+    layout: horizontal;
+    height: 4;
 }
 
+#add-url-text {
+    layout: horizontal;
+    height: 2;
+    padding-left: 1;
+}
+
+#add-new-name {
+    width: 20%;
+}
 #add-new-url {
-    align: right top;
+    width: 80%;
+}
+#submit-add-data {
+    layout: horizontal;
+    padding-left: 1;
 }
 
-Screen {
-    layout: grid;
-    grid-size: 2 3;
-    grid-gutter: 1;
-}
