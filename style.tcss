@@ -1,0 +1,13 @@
+#add-new-pane {
+    align: left top;
+}
+
+#add-new-url {
+    align: right top;
+}
+
+Screen {
+    layout: grid;
+    grid-size: 2 3;
+    grid-gutter: 1;
+}
