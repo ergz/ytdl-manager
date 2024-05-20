@@ -1,3 +1,4 @@
+from logging import error
 from textual.app import App, ComposeResult
 from textual.widgets import Header, Footer, Button, Input, Label, DataTable
 from textual.containers import Container
@@ -60,24 +61,32 @@ class YTApp(App):
             Input(placeholder="url", type="text", id="add-new-url", name="input_url"),
             id="add-data",
         )
+        yield Label(id="input_data_error", renderable="")
         yield Container(Button("Add", variant="primary"), id="submit-add-data")
         yield DataTable(id="current-table")
-
-        yield Footer()
 
     def on_input_submitted(self):
         name_input_widget = self.query_one("#add-new-name", Input)
         url_input_widget = self.query_one("#add-new-url", Input)
+        error_label = self.query_one("#input_data_error", Label)
         new_data = {
             "name": name_input_widget.value,
             "url": url_input_widget.value,
             "created_at": datetime.datetime.now(),
         }
+        error_label.update("")
+
         res = self.db.add(new_data)
         if res == 1:
             name_input_widget.value = ""
             url_input_widget.value = ""
             name_input_widget.focus()
+        else:
+            error_label.update("there was an error trying to add new data")
+
+    def data_table_update(self):
+        data_table = self.query_one("#current-table")
+        data_table.clear()
 
     def on_mount(self) -> None:
         self.title = "Youtube Video Aggregator"

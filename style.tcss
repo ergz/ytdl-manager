@@ -21,6 +21,6 @@
     height: 5;
 }
 
-#current-table {
-        
+#input_data_error {
+      color: red;
 }
