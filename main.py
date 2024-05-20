@@ -81,12 +81,23 @@ class YTApp(App):
             name_input_widget.value = ""
             url_input_widget.value = ""
             name_input_widget.focus()
+
+            self.data_table_update()
         else:
-            error_label.update("there was an error trying to add new data")
+            error_label.update(
+                f"Unable to add entry, name: '{name_input_widget.value}' already exists in your db."
+            )
 
     def data_table_update(self):
-        data_table = self.query_one("#current-table")
+        data_table = self.query_one("#current-table", DataTable)
         data_table.clear()
+
+        if not data_table.columns:
+            data_table.add_columns(*self.db.get_field_names())
+
+        data = self.db.read()
+        for d in data:
+            data_table.add_row(*tuple(d.values()))
 
     def on_mount(self) -> None:
         self.title = "Youtube Video Aggregator"
